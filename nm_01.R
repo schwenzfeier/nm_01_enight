@@ -56,10 +56,11 @@ dat$total_votes <- dat$dem + dat$rep
 
 dat_house_20 <- dat
 
+
 #################################
 ### READ IN 2021 HOUSE RESULTS
 #################################
-# TBD
+now_dat <- read.csv('~/Downloads/nm_01_hand_entered - Sheet1.csv')
 
 
 ### JOIN 2GETHER
@@ -75,6 +76,9 @@ dat <- dat_house_20 %>% select(county, Precinct, dem_house_20, rep_house_20, tot
   left_join(dat_pres_20 %>% select(county, Precinct, dem_pres_20, rep_pres_20, total_pres_20) )
 dat$dem_house_2way <- dat$dem_house_20 / (dat$dem_house_20 + dat$rep_house_20)
 dat$dem_pres_2way <- dat$dem_pres_20 / (dat$dem_pres_20 + dat$rep_pres_20)
+
+# drop precincts labeled "TOTALS"
+dat <- dat %>% filter(Precinct != 'TOTALS')
 
 # plot
 ggplot(dat) + geom_point(aes(x = dem_pres_2way, y = dem_house_2way)) + 
